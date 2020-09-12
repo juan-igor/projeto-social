@@ -1,0 +1,14 @@
+version: '3'
+services:
+  prod:
+    container_name: projeto-social-main
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8010:80"
+    environment: 
+      - NODE_ENV=production
+      - CHOKIDAR_USEPOLLING=true
+      - SKIP_PREFLIGHT_CHECK=true

@@ -1,0 +1,18 @@
+version: '3'
+services:
+  dev:
+    container_name: projeto-social-dev
+    restart: always
+    build:
+      context: .
+      dockerfile: Dockerfile-dev
+    ports:
+      - "3010:3000"
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+    environment: 
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - SKIP_PREFLIGHT_CHECK=true
+    stdin_open: true

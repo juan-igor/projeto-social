@@ -1,0 +1,22 @@
+# pull official base image
+FROM node:12.16.3-alpine
+
+RUN apk --no-cache add git
+
+# set working directory
+WORKDIR /app
+
+# add `/app/node_modules/.bin` to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+# add app
+COPY . ./
+
+# install app dependencies
+COPY package.json ./
+RUN yarn install
+RUN yarn global add react-scripts@3.4.1
+
+EXPOSE 3000
+
+ENTRYPOINT [ "yarn", "start" ]
