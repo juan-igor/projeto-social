@@ -1,4 +1,4 @@
-# Social Project - Website about anxiety
+# Projeto Social - Website sobre ansiedade
 
 Este projeto é um Website que foi criado com o intuito de ajudar pessoas a controlar sua ansiedade. A ideia partiu de um projeto da disciplina de Projeto Social ofertada no curso de Engenharia de Telecomunicações no IFCE - Campus Fortaleza.
 

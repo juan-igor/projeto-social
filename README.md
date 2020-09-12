@@ -1,6 +1,6 @@
-# OCHE Ceará - Main Website
+# Social Project - Website about anxiety
 
-Este projeto é um Website que foi criado com o intuito de ajudar pessoas a controlar sua ansiedade. A ideia partiu de um projeto da disciplina de Projeto Social ofertada no curso de Engenharia de Telecomunicações no IFCE - Campus Fortaleza.
+This project is a website that was created with the intention of helping people to control their anxiety. The idea came from a project of the discipline of Social Project offered in the course of Telecommunications Engineering at IFCE - Campus Fortaleza.
 
 [Versão em Português do Brasil](./README_pt-br.md)
 
