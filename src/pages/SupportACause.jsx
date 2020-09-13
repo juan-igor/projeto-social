@@ -8,10 +8,11 @@ import Layout from '../layouts/MainLayout'
 
 const styles = (theme) => ({
     grid: {
-        '& > div:not(:last-child)': {
-            paddingBottom: theme.spacing(3)
-        },
+        paddingTop: theme.spacing(3),
     },
+    homeText: {
+        fontFamily: "'Sofia', cursive",
+    }
 });
 
 class SupportACause extends PureComponent {
@@ -34,10 +35,13 @@ class SupportACause extends PureComponent {
 
         return (
             <Layout pageTitle="Apoie uma Causa" maxWidth={'lg'}>
-                <Grid container spacing={0} className={classes.grid}>
-                    <Typography>
-                        Apoie uma Causa
-                    </Typography>
+                <Grid container spacing={3} className={classes.grid}>
+                    <Grid item xs={12}>
+                        <Typography align="center" variant="h4" className={classes.homeText}>
+                            <p>Apoie uma Causa,</p>
+                            <p>Se nós te ajudamos, ajude outras pessoas também!</p>
+                        </Typography>
+                    </Grid>
                 </Grid>
             </Layout >
         );

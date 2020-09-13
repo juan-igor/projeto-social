@@ -15,7 +15,7 @@ const styles = (theme) => ({
     }
 });
 
-class AnxietyExercises extends PureComponent {
+class AboutAnxiety extends PureComponent {
 
     constructor(props) {
         super(props);
@@ -24,7 +24,7 @@ class AnxietyExercises extends PureComponent {
     }
 
     componentDidMount() {
-        document.title = "Exercícios de Ajuda | Sobre Ansiedade";
+        document.title = "Sobre Ansiedade";
         document.body.scrollTop = 0;
         document.documentElement.scrollTop = 0;
     }
@@ -34,11 +34,11 @@ class AnxietyExercises extends PureComponent {
         const { classes } = this.props;
 
         return (
-            <Layout pageTitle="Exercícios de Ajuda" maxWidth={'lg'}>
+            <Layout pageTitle="Sobre Ansiedade" maxWidth={'lg'}>
                 <Grid container spacing={3} className={classes.grid}>
                     <Grid item xs={12}>
                         <Typography align="center" variant="h4" className={classes.homeText}>
-                            <p>Aqui estão alguns exercícios para lhe ajudar a controlar a ansiedade.</p>
+                            <p>Que tal conhecer um pouco mais sobre ansiedade?</p>
                         </Typography>
                     </Grid>
                 </Grid>
@@ -48,8 +48,8 @@ class AnxietyExercises extends PureComponent {
 
 }
 
-AnxietyExercises.propTypes = {
+AboutAnxiety.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AnxietyExercises);
+export default withStyles(styles)(AboutAnxiety);
