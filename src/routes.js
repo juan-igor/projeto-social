@@ -19,7 +19,12 @@ const routes = [
                 path: "/apoie-uma-causa",
                 name: "Apoie uma Causa",
                 icon: <i class="fas fa-hand-holding-heart"></i>,
-            }
+            },
+            {
+                path: "/sobre-ansiedade",
+                name: "Sobre Ansiedade",
+                icon: <i class="fas fa-info"></i>,
+            },
         ]
     },
   ];
