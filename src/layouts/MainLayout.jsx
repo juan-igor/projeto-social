@@ -227,7 +227,7 @@ const styles = (theme) => ({
   },
 });
 
-let minWidthSidebarClosed = 860;
+let minWidthSidebarClosed = 883;
 
 function ScrollTop(props) {
   const trigger = useScrollTrigger({
@@ -264,26 +264,41 @@ class MainLayout extends PureComponent {
 
     this.state = {
       ableToOpen: window.innerWidth <= this.props.sidebarMinWidth,
-      open: false
+      open: false,
+      navbarLogo: LogoFull,
     };
+  }
 
-    this.setDrawerStateResponsive = () => {
-      if (window.innerWidth <= this.props.sidebarMinWidth) {
-        this.setState({ ...this.state, ableToOpen: true });
+  setDrawerStateResponsive = () => {
+    if (window.innerWidth <= this.props.sidebarMinWidth) {
+      this.setState({ ...this.state, ableToOpen: true });
+    } else {
+      this.setState({ ...this.state, ableToOpen: false, open: false });
+    }
+  };
+
+  setNavbarLogoResponsive = () => {
+    if(window.innerWidth <= 339){
+      this.setState({ ...this.state, navbarLogo: Logo });
+    } else {
+      if(window.innerWidth <= 1026){
+        this.setState({ ...this.state, navbarLogo: LogoFullMin });
       } else {
-        this.setState({ ...this.state, ableToOpen: false, open: false });
+        this.setState({ ...this.state, navbarLogo: LogoFull });
       }
-    };
+    }
   }
 
   componentDidMount() {
     window.addEventListener('resize', this.setDrawerStateResponsive);
+    window.addEventListener('resize', this.setNavbarLogoResponsive);
     window.addEventListener('resize', setPageHeightResponsive);
     setPageHeightResponsive();
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setDrawerStateResponsive);
+    window.removeEventListener('resize', this.setNavbarLogoResponsive);
     window.removeEventListener('resize', setPageHeightResponsive);
   }
 
@@ -304,13 +319,13 @@ class MainLayout extends PureComponent {
   render() {
 
     const { classes, pageTitle } = this.props;
-    const { open, ableToOpen } = this.state;
+    const { open, ableToOpen, navbarLogo } = this.state;
 
     return (
       <ThemeProvider theme={ocheTheme}>
         <div className={classes.root}>
           <CssBaseline />
-          <Navbar logo={window.innerWidth <= 339 ? Logo : (window.innerWidth <= 455 ? LogoFullMin : LogoFull)} classes={classes} pageTitle={pageTitle} iconButtonAction={this.handleDrawerOpen} openState={open} ableToOpen={ableToOpen} />
+          <Navbar logo={navbarLogo} classes={classes} pageTitle={pageTitle} iconButtonAction={this.handleDrawerOpen} openState={open} ableToOpen={ableToOpen} />
           <Drawer
             variant={'temporary'}
             classes={{
@@ -336,8 +351,8 @@ class MainLayout extends PureComponent {
           </Drawer>
           <main className={classes.content} id="page-main">
             <div className={classes.drawerHeader} />
-            <Container className={classes.container} maxWidth={false} style={{ backgroundColor: secondary_color, backgroundImage: 'url('+ this.props.pageBackground +')', backgroundPosition: 'center'}}>
-                <Container id="page-content" maxWidth={this.props.maxWidth || false} style={{ backgroundColor: 'rgba(255, 255, 255, 0.6)' }}>
+            <Container className={classes.container} maxWidth={false} style={this.props.pageBackground && { backgroundImage: 'url('+ this.props.pageBackground +')', backgroundPosition: 'center' }}>
+                <Container id="page-content" className={!this.props.maxWidth ? classes.container : ''} maxWidth={this.props.maxWidth || false} style={(this.props.pageBackground && this.props.pageBackgroundOpacity) ? { backgroundColor: 'rgba(255, 255, 255, '+ this.props.pageBackgroundOpacity +')' } : {}}>
                   {this.props.children}
                 </Container>
                 <Footer />
@@ -358,11 +373,13 @@ MainLayout.propTypes = {
   classes: PropTypes.object.isRequired,
   pageTitle: PropTypes.string.isRequired,
   sidebarOpened: PropTypes.bool,
-  sidebarMinWidth: PropTypes.number
+  sidebarMinWidth: PropTypes.number,
+  pageBackground: PropTypes.any,
+  pageBackgroundOpacity: PropTypes.number,
 };
 
 MainLayout.defaultProps = {
-  sidebarMinWidth: minWidthSidebarClosed
+  sidebarMinWidth: minWidthSidebarClosed,
 }
 
 // export default React.memo(withStyles(styles)(MainLayout));
