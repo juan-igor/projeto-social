@@ -1,7 +1,6 @@
 import React, { PureComponent } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import clsx from 'clsx'
 
 import { withStyles, darken } from '@material-ui/core/styles'
 import { Grid, Typography, Button } from '@material-ui/core'
@@ -13,19 +12,6 @@ const styles = (theme) => ({
         padding: theme.spacing(3, 8),
         // backgroundColor: '#fafafa',
         background: darken(secondary_color, 0.8),
-    },
-    bottomLeft: {
-        textAlign: 'left',
-        [theme.breakpoints.down('sm')]: {
-            textAlign: 'center',
-        }
-    },
-    bottomRight: {
-        textAlign: 'right',
-        [theme.breakpoints.down('sm')]: {
-            textAlign: 'center',
-            marginTop: theme.spacing(1),
-        }
     },
     developerLink: {
         color: 'black',
@@ -45,12 +31,19 @@ const styles = (theme) => ({
     },
     footerText: {
         color: 'white',
+        fontFamily: "'Nunito', sans-serif",
+        textAlign: 'justify',
         // fontFamily: "'Comfortaa', sans-serif",
         // fontFamily: "'Dancing Script', cursive",
+        
+    },
+    footerTextTitle: {
+        color: 'white',
         fontFamily: "'Sofia', cursive",
     },
     footerBottomText: {
         color: 'white',
+        textAlign: 'center',
         // fontFamily: "'Comfortaa', sans-serif",
     },
     innerGrid: {
@@ -86,7 +79,7 @@ class InterfaceFooter extends PureComponent {
                     <Grid item xs={12} md={6} className={classes.mainItem}>
                         <Grid container spacing={1} alignContent="center" alignItems="center" justify="center" className={classes.innerGrid}>
                             <Grid item xs={12} style={{ maxWidth: '500px' }}>
-                                <Typography component="p" variant="h4" className={classes.footerText}  style={{ marginBottom: '20px' }}>
+                                <Typography component="p" variant="h4" className={classes.footerTextTitle}  style={{ marginBottom: '20px' }}>
                                     Sobre Ansiedade
                                 </Typography>
                                 <Typography component="p" variant="h5" className={classes.footerText}>
@@ -97,7 +90,8 @@ class InterfaceFooter extends PureComponent {
                                 <Button
                                     variant="outlined"
                                     color="primary"
-                                    startIcon={<i class="fas fa-hand-holding-heart"></i>}
+                                    size="large"
+                                    startIcon={<i className="fas fa-hand-holding-heart"></i>}
                                     component={React.forwardRef((props, ref) => (<Link to="/apoie-uma-causa" {...props} ref={ref} />))}
                                 >
                                     Apoie uma Causa
@@ -108,10 +102,10 @@ class InterfaceFooter extends PureComponent {
                     <Grid item xs={12} md={6} className={classes.mainItem}>
                         <Grid container spacing={0} alignContent="center" alignItems="center" justify="center" className={classes.innerGrid}>
                             <Grid item style={{ maxWidth: '500px' }}>
-                                <Typography component="p" variant="h4" className={classes.footerText} style={{ textAlign: 'center', marginBottom: '30px' }}>
+                                <Typography component="p" variant="h4" className={classes.footerTextTitle} style={{ textAlign: 'center', marginBottom: '30px' }}>
                                     Precisa de Ajuda?
                                 </Typography>
-                                <Typography component="p" variant="h5" className={classes.footerText} style={{ textAlign: 'center' }}>
+                                <Typography component="p" variant="h5" className={classes.footerText} style={{ textAlign: 'justify' }}>
                                     Disque <strong>188</strong>. É uma ligação gratuita para o Centro de Valorização da Vida (CVV), alguém irá lhe atender e irá lhe ajudar.
                                 </Typography>
                             </Grid>
@@ -119,14 +113,9 @@ class InterfaceFooter extends PureComponent {
                     </Grid>
                 </Grid>
                 <Grid container spacing={0} alignContent="space-between" alignItems="center" justify="center" className={classes.bottomGrid}>
-                    <Grid item xs={12} md={6}>
-                        <Typography component="p" variant="body1" className={clsx(classes.footerBottomText, classes.bottomLeft)}>
-                            &copy; {new Date().getFullYear()}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Typography component="p" variant="body1" className={clsx(classes.footerBottomText, classes.bottomRight)}>
-                            Criado com <i class="fas fa-heart"></i> por alunos do IFCE - Campus Fortaleza
+                    <Grid item>
+                        <Typography component="p" variant="body1" className={classes.footerBottomText}>
+                            &copy; {new Date().getFullYear()}. Criado com <i className="fas fa-heart"></i> por alunos do IFCE - Campus Fortaleza
                         </Typography>
                     </Grid>
                 </Grid>

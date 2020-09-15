@@ -92,7 +92,6 @@ class Navbar extends PureComponent {
 Navbar.propTypes = {
     openState: PropTypes.bool.isRequired,
     pageTitle: PropTypes.string,
-    user: PropTypes.object.isRequired,
     iconButtonAction: PropTypes.func.isRequired,
     classes: PropTypes.object.isRequired,
     logo: PropTypes.any.isRequired,

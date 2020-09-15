@@ -1,12 +1,13 @@
 import React, { PureComponent } from 'react'
 import { withRouter } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import $ from 'jquery'
 
 import {
   CssBaseline, Drawer, IconButton, Container, Grid, Fab,
   Zoom, useScrollTrigger,
 } from '@material-ui/core'
-import { KeyboardArrowUpRounded } from '@material-ui/icons'
+import { KeyboardArrowUpRounded, PlayArrowRounded, PauseRounded, MusicNoteRounded } from '@material-ui/icons'
 import { withStyles, ThemeProvider, createMuiTheme, darken } from '@material-ui/core/styles'
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -19,7 +20,7 @@ import Logo from '../assets/images/ansiedade_logo.png'
 import LogoFullMin from '../assets/images/ansiedade_logo_full.png'
 import LogoFull from '../assets/images/ansiedade_logo_full2.png'
 
-import { isMobileDevice } from '../functions/utils/general'
+// import { isMobileDevice } from '../functions/utils/general'
 
 // Cores para combater o estresse
 // const color1 = '#F2D7E0'; // Rosa
@@ -30,6 +31,7 @@ import { isMobileDevice } from '../functions/utils/general'
 
 export const primary_color = '#e6b2c3';
 export const secondary_color = '#776bc7';
+export const music_url = 'https://juan-general-public-bucket.s3-sa-east-1.amazonaws.com/musicas/musica_tranquilizante.mp3';
 
 const ocheTheme = createMuiTheme({
   palette: {
@@ -56,6 +58,9 @@ const styles = (theme) => ({
     '& > .fa': {
       margin: theme.spacing(2),
     },
+  },
+  audioButton: {
+    color: 'white',
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
@@ -144,39 +149,10 @@ const styles = (theme) => ({
       width: theme.spacing(9),
     },
   },
-  scrollbarWrapper: {
-    top: '54px !important',
-    width: (isMobileDevice() ? 'calc(100vw - 15px)' : 'calc(100vw - 10px)') + ' !important',
-    // height: 'calc(100vh - 54px)',
-    '@media (min-width:0px) and (orientation: landscape)': {
-      top: '44px !important',
-      // height: 'calc(100vh - 44px)',
-    },
-    '@media (min-width:600px)': {
-      top: '64px !important',
-      // height: 'calc(100vh - 64px)',
-    },
-  },
-  scrollbarY: {
-    top: '64px !important',
-    width: (isMobileDevice() ? '15px' : '10px') + ' !important',
-    // height: 'calc(100vh - 74px) !important',
-    '@media (min-width:0px) and (orientation: landscape)': {
-      top: '54px !important',
-      // height: 'calc(100vh - 64px) !important',
-    },
-    '@media (min-width:600px)': {
-      top: '74px !important',
-      // height: 'calc(100vh - 84px) !important',
-    },
-    '& > div': {
-      background: '#00774C !important',
-    }
-  },
-  scrollbarX: {
-    '& > div': {
-      background: '#00774C !important',
-    }
+  musicControl: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    left: theme.spacing(2),
   },
   menuButton: {
     marginRight: theme.spacing(3),
@@ -252,7 +228,7 @@ function setPageHeightResponsive() {
       pageHeight = window.innerHeight - 44;
     }
   
-    document.getElementById('page-content').style.height = pageHeight + 'px';
+    document.getElementById('page-content').style.minHeight = pageHeight + 'px';
   }
 
 class MainLayout extends PureComponent {
@@ -260,12 +236,11 @@ class MainLayout extends PureComponent {
   constructor(props) {
     super(props);
 
-    this.scrollInstance = null;
-
     this.state = {
       ableToOpen: window.innerWidth <= this.props.sidebarMinWidth,
       open: false,
       navbarLogo: LogoFull,
+      audio: null,
     };
   }
 
@@ -294,12 +269,50 @@ class MainLayout extends PureComponent {
     window.addEventListener('resize', this.setNavbarLogoResponsive);
     window.addEventListener('resize', setPageHeightResponsive);
     setPageHeightResponsive();
+
+    $(() => {
+      var audioElement = document.createElement('audio');
+      audioElement.setAttribute('src', music_url);
+
+      this.setState({
+        ...this.state,
+        audio: audioElement
+      });
+
+      $('#music-pause-button').css('display', '');
+      $('#music-play-button').css('display', 'none');
+    
+      this.state.audio.addEventListener('ended', () => {
+          this.play();
+      }, false);
+
+      this.state.audio.addEventListener("canplay",() => {
+        this.state.audio.play();
+      });
+
+      $('#music-play-button').on('click', () => {
+        this.state.audio.play();
+        $('#music-play-button').css('display', 'none');
+        $('#music-pause-button').css('display', '');
+      });
+
+      $('#music-pause-button').on('click', () => {
+        this.state.audio.pause();
+        $('#music-pause-button').css('display', 'none');
+        $('#music-play-button').css('display', '');
+      });
+    });
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.setDrawerStateResponsive);
     window.removeEventListener('resize', this.setNavbarLogoResponsive);
     window.removeEventListener('resize', setPageHeightResponsive);
+
+    $(() => {
+      this.state.audio.pause();
+      this.state.audio.remove();
+    });
   }
 
   handleDrawerOpen = () => {
@@ -356,11 +369,31 @@ class MainLayout extends PureComponent {
                   {this.props.children}
                 </Container>
                 <Footer />
-                <ScrollTop className={classes.backToTop} onClick={() => { document.body.scrollTop = 0; document.documentElement.scrollTop = 0; }}>
-                    <Fab color="secondary" size="small" aria-label="Voltar ao início da página">
+                <ScrollTop className={classes.backToTop} onClick={() => { $('html, body').animate({ scrollTop: 0 }, 400) }}>
+                    <Fab color="secondary" size="small" aria-label="Voltar ao início da página" >
                         <KeyboardArrowUpRounded />
                     </Fab>
                 </ScrollTop>
+                <div id="music-buttons" role="presentation" className={classes.musicControl}>
+                  <Fab color="secondary" variant="extended" size="small" aria-label="Controlar Música" component={React.forwardRef((props, ref) => (<div {...props} ref={ref} />) )}>
+                    <IconButton color="primary" disabled>
+                      {/* <i className="fas fa-music"></i> */}
+                      <MusicNoteRounded fontSize="large" />
+                    </IconButton>
+                    {/* <IconButton color="primary" className={classes.audioButton}>
+                      <i id="music-backward-button" class="fas fa-backward"></i>
+                    </IconButton> */}
+                    <IconButton id="play-pause-button" color="primary" className={classes.audioButton}>
+                      <PlayArrowRounded id="music-play-button" fontSize="large" />
+                      <PauseRounded id="music-pause-button" fontSize="large" />
+                      {/* <i id="music-play-button" className="fas fa-play"></i>
+                      <i id="music-pause-button" className="fas fa-pause"></i> */}
+                    </IconButton>
+                    {/* <IconButton color="primary" className={classes.audioButton}>
+                      <i id="music-forward-button" class="fas fa-forward"></i>
+                    </IconButton> */}
+                  </Fab>
+                </div>
             </Container>
           </main>
         </div>
